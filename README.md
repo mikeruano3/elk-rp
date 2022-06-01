@@ -12,11 +12,17 @@ https://kifarunix.com/ship-system-logs-to-elk-stack-using-elastic-agents/
 To configure SSL:
 https://kifarunix.com/install-and-enroll-elastic-agents-to-fleet-manager-in-linux/
 
+Create container
+`docker volume create agent-volume`
+`docker run --network="host" --mount source=agent-volume,target=/appdata -ti ubuntu /bin/bash`
+
 Run container on local bash
+`docker ps -a`
+`docker start <container id>`
 `docker exec -it --user root <container id> /bin/bash`
 
-`exec -it --user root elk-rp_kibana_1 /bin/bash`
-
+Elastic-agent docker
+https://www.elastic.co/guide/en/fleet/current/elastic-agent-container.html
 
 -----
 

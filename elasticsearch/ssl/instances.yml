@@ -1,0 +1,22 @@
+instances:
+  - name: "elk-server-certs" 
+    ip: 
+      - "0.0.0.0"
+    dns: 
+      - "elasticsearch"
+  - name: "kibana"
+    ip: 
+      - "0.0.0.0"
+    dns: 
+      - "elasticsearch"
+      - "kibana"
+  - name: "logstash"
+    ip: 
+      - "0.0.0.0"
+    dns: 
+      - "elasticsearch"
+  - name: "elasticagent"
+    ip: 
+      - "0.0.0.0"
+    dns: 
+      - "elasticsearch"

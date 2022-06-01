@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.9'
 
 services:
 
@@ -59,6 +59,7 @@ services:
     volumes:
       - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,Z
       - ./logstash/pipeline:/usr/share/logstash/pipeline:ro,Z
+      - generatedcerts:/elkcerts/certs/:z
     ports:
       - "5044:5044"
       - "5000:5000/tcp"
@@ -89,6 +90,29 @@ services:
       - elk
     depends_on:
       - elasticsearch
+
+  elastic-agent:
+    build:
+      context: elastic-agent/
+      args:
+        ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
+    user: root
+    volumes:
+      - generatedcerts:/elkcerts/certs/:z
+    # tty: true
+    # command: "/bin/bash"
+    environment:
+        URL: "https://elasticsearch:8220"
+        FLEET_SERVER_ES: "https://elasticsearch:9200"
+        FLEET_SERVER_SERVICE_TOKEN: ${FLEET_SERVER_SERVICE_TOKEN:-}
+        FLEET_SERVER_POLICY:  ${FLEET_SERVER_POLICY:-}
+        ELK_CERTS_PATH: "/elkcerts/certs"
+    network_mode: "host"
+    extra_hosts:
+      - "elasticsearch:127.0.0.1"
+    depends_on:
+      - elasticsearch
+      - kibana
 
 networks:
   elk:

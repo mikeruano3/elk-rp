@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  elasticagent:
+    build:
+      context: buildconfig/
+    volumes:
+      - ubuntuapp:/data:z
+      - ./certs:/certs:ro,Z
+    tty: true
+    command: "/bin/bash"
+    network_mode: "host"
+    extra_hosts:
+      - "elasticsearch:127.0.0.1"
+volumes:
+  ubuntuapp:
+    

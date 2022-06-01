@@ -16,4 +16,3 @@ elasticsearch.username: kibana_system
 elasticsearch.password: ${KIBANA_SYSTEM_PASSWORD}
 elasticsearch.ssl.certificateAuthorities: [ "/elkcerts/certs/ca/ca.crt"]
 xpack.encryptedSavedObjects.encryptionKey: ${KIBANA_ENCRYPTION_KEY}
-xpack.reporting.kibanaServer.hostname: localhost
