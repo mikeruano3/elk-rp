@@ -10,3 +10,15 @@ network.host: 0.0.0.0
 #
 xpack.license.self_generated.type: trial
 xpack.security.enabled: true
+xpack.security.http.ssl.enabled: true
+xpack.security.http.ssl.verification_mode: certificate
+xpack.security.http.ssl.key: /usr/share/elasticsearch/config/certs/elk-server-certs/elk-server-certs.key
+xpack.security.http.ssl.certificate: /usr/share/elasticsearch/config/certs/elk-server-certs/elk-server-certs.crt
+xpack.security.http.ssl.certificate_authorities: /usr/share/elasticsearch/config/certs/ca/ca.crt
+xpack.security.transport.ssl.enabled: true
+xpack.security.transport.ssl.key: /usr/share/elasticsearch/config/certs/elk-server-certs/elk-server-certs.key
+xpack.security.transport.ssl.certificate: /usr/share/elasticsearch/config/certs/elk-server-certs/elk-server-certs.crt
+xpack.security.transport.ssl.certificate_authorities: /usr/share/elasticsearch/config/certs/ca/ca.crt
+
+xpack.security.authc.api_key.enabled: true
+

@@ -17,10 +17,12 @@ services:
     init: true
     volumes:
       - setup:/state:Z
+      - generatedcerts:/elkcerts/certs/:z
     environment:
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
       LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
       KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
+    # privileged: true
     networks:
       - elk
 
@@ -32,9 +34,11 @@ services:
     volumes:
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,z
       - elasticsearch:/usr/share/elasticsearch/data:z
+      - generatedcerts:/elkcerts/certs/:z
     ports:
       - "9200:9200"
       - "9300:9300"
+    # command: tail -F anything
     environment:
       ES_JAVA_OPTS: -Xms512m -Xmx512m
       # Bootstrap password.
@@ -75,10 +79,12 @@ services:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
       - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro,Z
+      - generatedcerts:/elkcerts/certs/:z
     ports:
       - "5601:5601"
     environment:
       KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
+      KIBANA_ENCRYPTION_KEY: ${KIBANA_ENCRYPTION_KEY:-}
     networks:
       - elk
     depends_on:
@@ -91,3 +97,4 @@ networks:
 volumes:
   setup:
   elasticsearch:
+  generatedcerts:
