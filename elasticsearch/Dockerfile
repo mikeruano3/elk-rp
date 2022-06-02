@@ -35,6 +35,10 @@ RUN cd /usr/share/elasticsearch && \
 # Unzip CERT bundle
 RUN cd /elkcerts/certs && unzip certificate-bundle.zip 
 
+# Generate logstash pkcs8 key
+RUN openssl pkcs8 -in /elkcerts/certs/logstash/logstash.key -topk8 -nocrypt -out /elkcerts/certs/logstash/logstash.pkcs8.key
+RUN chmod --reference=/elkcerts/certs/logstash/logstash.key /elkcerts/certs/logstash/logstash.pkcs8.key
+
 # Copy key to usr/share
 RUN cp -r /elkcerts/certs /usr/share/elasticsearch/config
 

@@ -3,7 +3,10 @@
 ## https://github.com/elastic/logstash/blob/master/docker/data/logstash/config/logstash-full.yml
 #
 http.host: "0.0.0.0"
+node.name: logstash
 xpack.monitoring.enabled: true
+xpack.monitoring.elasticsearch.username: logstash_internal
+xpack.monitoring.elasticsearch.password: ${LOGSTASH_INTERNAL_PASSWORD}
 xpack.monitoring.elasticsearch.ssl.certificate_authority: "/elkcerts/certs/ca/ca.crt"
 xpack.monitoring.elasticsearch.ssl.verification_mode: "certificate"
 xpack.monitoring.elasticsearch.hosts: [ "https://elasticsearch:9200" ]
