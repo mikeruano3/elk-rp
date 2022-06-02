@@ -16,3 +16,10 @@ elasticsearch.username: kibana_system
 elasticsearch.password: ${KIBANA_SYSTEM_PASSWORD}
 elasticsearch.ssl.certificateAuthorities: [ "/elkcerts/certs/ca/ca.crt"]
 xpack.encryptedSavedObjects.encryptionKey: ${KIBANA_ENCRYPTION_KEY}
+
+xpack.fleet.agents.fleet_server.hosts: [ "https://elasticsearch:8220" ]
+xpack.fleet.agents.elasticsearch.hosts: [ "https://elasticsearch:9200" ]
+
+xpack.fleet.packages:
+  - name: fleet_server
+    version: latest
