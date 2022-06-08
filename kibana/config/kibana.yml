@@ -1,9 +1,9 @@
 ---
 ## Default Kibana configuration from Kibana base image.
 ## https://github.com/elastic/kibana/blob/master/src/dev/build/tasks/os_packages/docker_generator/templates/kibana_yml.template.ts
-#
+#https://www.elastic.co/guide/en/kibana/master/fleet-settings-kb.html
 server.name: kibana
-server.host: 0.0.0.0
+server.host: kibana
 server.ssl.enabled: true
 server.ssl.certificate: /elkcerts/certs/kibana/kibana.crt
 server.ssl.key: /elkcerts/certs/kibana/kibana.key
@@ -16,9 +16,9 @@ elasticsearch.username: kibana_system
 elasticsearch.password: ${KIBANA_SYSTEM_PASSWORD}
 elasticsearch.ssl.certificateAuthorities: [ "/elkcerts/certs/ca/ca.crt"]
 xpack.encryptedSavedObjects.encryptionKey: ${KIBANA_ENCRYPTION_KEY}
-
-xpack.fleet.agents.fleet_server.hosts: [ "https://elasticsearch:8220" ]
+xpack.fleet.agents.fleet_server.hosts: [ "https://fleet:8220" ]
 xpack.fleet.agents.elasticsearch.hosts: [ "https://elasticsearch:9200" ]
+# xpack.fleet.agents.elasticsearch.config: "ssl.certificate_authorities: ['/elkcerts/certs/ca/ca.crt']"
 
 xpack.fleet.packages:
   - name: fleet_server

@@ -24,6 +24,12 @@ Run container on local bash
 Elastic-agent docker
 https://www.elastic.co/guide/en/fleet/current/elastic-agent-container.html
 
+Install Docker
+https://docs.docker.com/engine/install/ubuntu/
+
+Install Docker compose
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04
+
 -----
 
 [![Elastic Stack version](https://img.shields.io/badge/Elastic%20Stack-8.2.2-00bfb3?style=flat&logo=elastic-stack)](https://www.elastic.co/blog/category/releases)

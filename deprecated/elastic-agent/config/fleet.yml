@@ -1,0 +1,15 @@
+fleet:
+  enabled: true
+  access_api_key: API-KEY
+  hosts:
+  - https://elasticsearch:8220
+  ssl:
+    verification_mode: ""
+    certificate_authorities:
+    - /elkcerts/certs/ca/ca.crt
+    renegotiation: never
+  reporting:
+    threshold: 10000
+    check_frequency_sec: 30
+  agent:
+    id: ""

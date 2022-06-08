@@ -22,6 +22,7 @@ services:
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
       LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
       KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
+      FLEET_SERVER_SERVICE_TOKEN: ${FLEET_SERVER_SERVICE_TOKEN:-}
     # privileged: true
     networks:
       - elk
@@ -50,6 +51,7 @@ services:
       discovery.type: single-node
     networks:
       - elk
+    hostname: elasticsearch
 
   logstash:
     build:
@@ -68,10 +70,12 @@ services:
     environment:
       LS_JAVA_OPTS: -Xms256m -Xmx256m
       LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
     networks:
       - elk
     depends_on:
       - elasticsearch
+    hostname: logstash
 
   kibana:
     build:
@@ -90,29 +94,81 @@ services:
       - elk
     depends_on:
       - elasticsearch
+    hostname: kibana
 
-  elastic-agent:
+  fleet:
     build:
-      context: elastic-agent/
+      context: fleet/
       args:
-        ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
+        ELASTIC_VERSION: ${ELASTIC_VERSION:-}
+    healthcheck:
+      test: "curl -X GET https://fleet:8220/api/status -k -u elastic:${ELASTIC_PASSWORD} | grep HEALTHY 2>&1 >/dev/null"
+      retries: 12
+      interval: 5s
+    container_name: fleet
+    restart: always
     user: root
+    environment:
+    - FLEET_SERVER_ENABLE=1
+    - FLEET_SERVER_ELASTICSEARCH_HOST=https://elasticsearch:9200
+    - FLEET_SERVER_ELASTICSEARCH_USERNAME=elastic
+    - FLEET_SERVER_ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD:-}
+    - FLEET_SERVER_ELASTICSEARCH_CA=/elkcerts/certs/ca/ca.crt
+    - FLEET_URL=https://fleet:8220
+    - FLEET_SERVER_PORT=8220
+    - FLEET_PORT=8220
+    - FLEET_SERVER_INSECURE_HTTP=1
+    - FLEET_SERVER_ES_CA=/elkcerts/certs/ca/ca.crt
+    - FLEET_SERVER_CERT=/elkcerts/certs/ca/ca.crt
+    - FLEET_SERVER_CERT_KEY=/elkcerts/certs/ca/ca.key
+    - KIBANA_FLEET_SETUP=1
+    - KIBANA_FLEET_HOST=https://kibana:5601
+    - KIBANA_FLEET_USERNAME=elastic
+    - KIBANA_FLEET_PASSWORD=${ELASTIC_PASSWORD:-}
+    - KIBANA_FLEET_CA=/elkcerts/certs/ca/ca.crt
+    - FLEET_SERVER_POLICY=${FLEET_SERVER_POLICY:-}
+    - FLEET_ENROLL=1
+    ports:
+      - 8220:8220
+    networks:
+      - elk
     volumes:
       - generatedcerts:/elkcerts/certs/:z
-    # tty: true
-    # command: "/bin/bash"
+      - ./fleet/config/elastic-agent.yml:/usr/share/elastic-agent/config/elastic-agent.yml:ro,Z
+    hostname: fleet
+
+  agent:
+    build:
+      context: elastic-agent-docker/
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION:-}
+    container_name: agent
+    #restart: always
+    user: root 
+    healthcheck:
+      test: "elastic-agent status"
+      retries: 90
+      interval: 1s
     environment:
-        URL: "https://elasticsearch:8220"
-        FLEET_SERVER_ES: "https://elasticsearch:9200"
-        FLEET_SERVER_SERVICE_TOKEN: ${FLEET_SERVER_SERVICE_TOKEN:-}
-        FLEET_SERVER_POLICY:  ${FLEET_SERVER_POLICY:-}
-        ELK_CERTS_PATH: "/elkcerts/certs"
-    network_mode: "host"
-    extra_hosts:
-      - "elasticsearch:127.0.0.1"
-    depends_on:
-      - elasticsearch
-      - kibana
+      - FLEET_ENROLLMENT_TOKEN=${FLEET_ENROLLMENT_TOKEN:-}
+      - FLEET_ENROLL=1
+      - FLEET_URL=https://fleet:8220
+      - FLEET_INSECURE=1
+      - FLEET_CA=/elkcerts/certs/ca/ca.crt
+      - ELASTICSEARCH_HOSTS="https://elasticsearch:9200"
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD:-}
+      - ELASTICSEARCH_CA=/elkcerts/certs/ca/ca.crt
+      - "STATE_PATH=/usr/share/elastic-agent"
+      - KIBANA_FLEET_HOST=https://kibana:5601
+      - KIBANA_FLEET_USERNAME=elastic
+      - KIBANA_FLEET_PASSWORD=${ELASTIC_PASSWORD:-}
+      - KIBANA_FLEET_CA=/elkcerts/certs/ca/ca.crt
+    networks:
+      - elk
+    volumes:
+      - generatedcerts:/elkcerts/certs/:z
+    hostname: agent
 
 networks:
   elk:

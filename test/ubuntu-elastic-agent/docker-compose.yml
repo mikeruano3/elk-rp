@@ -3,6 +3,9 @@ services:
   elasticagent:
     build:
       context: buildconfig/
+      args:
+        ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
+    user: root
     volumes:
       - ubuntuapp:/data:z
       - ./certs:/certs:ro,Z
@@ -11,6 +14,13 @@ services:
     network_mode: "host"
     extra_hosts:
       - "elasticsearch:127.0.0.1"
+    environment:
+        URL: "https://elasticsearch:8220"
+        FLEET_SERVER_ES: "https://elasticsearch:9200"
+        FLEET_SERVER_SERVICE_TOKEN: ${FLEET_SERVER_SERVICE_TOKEN:-}
+        FLEET_SERVER_POLICY:  ${FLEET_SERVER_POLICY:-}
+        ELK_CERTS_PATH: "/elkcerts/certs"
+
 volumes:
   ubuntuapp:
     

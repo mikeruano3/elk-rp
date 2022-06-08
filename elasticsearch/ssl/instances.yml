@@ -20,3 +20,10 @@ instances:
       - "0.0.0.0"
     dns: 
       - "elasticsearch"
+  - name: "fleet"
+    ip: 
+      - "0.0.0.0"
+    dns: 
+      - "fleet"
+      - "elasticsearch"
+      - "kibana"

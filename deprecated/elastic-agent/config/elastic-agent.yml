@@ -1,0 +1,7 @@
+outputs:
+  default:
+    type: elasticsearch
+    hosts: 'https://elasticsearch:9200'
+    protocol: https
+    username: 'elastic'
+    password: '${ELASTIC_PASSWORD}'
