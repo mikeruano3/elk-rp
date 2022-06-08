@@ -117,10 +117,10 @@ services:
     - FLEET_URL=https://fleet:8220
     - FLEET_SERVER_PORT=8220
     - FLEET_PORT=8220
-    - FLEET_SERVER_INSECURE_HTTP=1
+    # - FLEET_SERVER_INSECURE_HTTP=1
     - FLEET_SERVER_ES_CA=/elkcerts/certs/ca/ca.crt
-    - FLEET_SERVER_CERT=/elkcerts/certs/ca/ca.crt
-    - FLEET_SERVER_CERT_KEY=/elkcerts/certs/ca/ca.key
+    #- FLEET_SERVER_CERT=/elkcerts/certs/elk-server-certs/elk-server-certs.crt
+    #- FLEET_SERVER_CERT_KEY=/elkcerts/certs/elk-server-certs/elk-server-certs.key
     - KIBANA_FLEET_SETUP=1
     - KIBANA_FLEET_HOST=https://kibana:5601
     - KIBANA_FLEET_USERNAME=elastic
@@ -137,38 +137,38 @@ services:
       - ./fleet/config/elastic-agent.yml:/usr/share/elastic-agent/config/elastic-agent.yml:ro,Z
     hostname: fleet
 
-  agent:
-    build:
-      context: elastic-agent-docker/
-      args:
-        ELASTIC_VERSION: ${ELASTIC_VERSION:-}
-    container_name: agent
-    #restart: always
-    user: root 
-    healthcheck:
-      test: "elastic-agent status"
-      retries: 90
-      interval: 1s
-    environment:
-      - FLEET_ENROLLMENT_TOKEN=${FLEET_ENROLLMENT_TOKEN:-}
-      - FLEET_ENROLL=1
-      - FLEET_URL=https://fleet:8220
-      - FLEET_INSECURE=1
-      - FLEET_CA=/elkcerts/certs/ca/ca.crt
-      - ELASTICSEARCH_HOSTS="https://elasticsearch:9200"
-      - ELASTICSEARCH_USERNAME=elastic
-      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD:-}
-      - ELASTICSEARCH_CA=/elkcerts/certs/ca/ca.crt
-      - "STATE_PATH=/usr/share/elastic-agent"
-      - KIBANA_FLEET_HOST=https://kibana:5601
-      - KIBANA_FLEET_USERNAME=elastic
-      - KIBANA_FLEET_PASSWORD=${ELASTIC_PASSWORD:-}
-      - KIBANA_FLEET_CA=/elkcerts/certs/ca/ca.crt
-    networks:
-      - elk
-    volumes:
-      - generatedcerts:/elkcerts/certs/:z
-    hostname: agent
+# agent:
+#   build:
+#     context: elastic-agent-docker/
+#     args:
+#       ELASTIC_VERSION: ${ELASTIC_VERSION:-}
+#   container_name: agent
+#   #restart: always
+#   user: root 
+#   healthcheck:
+#     test: "elastic-agent status"
+#     retries: 90
+#     interval: 1s
+#   environment:
+#     - FLEET_ENROLLMENT_TOKEN=${FLEET_ENROLLMENT_TOKEN:-}
+#     - FLEET_ENROLL=1
+#     - FLEET_URL=https://fleet:8220
+#     - FLEET_INSECURE=1
+#     - FLEET_CA=/elkcerts/certs/ca/ca.crt
+#     - ELASTICSEARCH_HOSTS="https://elasticsearch:9200"
+#     - ELASTICSEARCH_USERNAME=elastic
+#     - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD:-}
+#     - ELASTICSEARCH_CA=/elkcerts/certs/ca/ca.crt
+#     - "STATE_PATH=/usr/share/elastic-agent"
+#     - KIBANA_FLEET_HOST=https://kibana:5601
+#     - KIBANA_FLEET_USERNAME=elastic
+#     - KIBANA_FLEET_PASSWORD=${ELASTIC_PASSWORD:-}
+#     - KIBANA_FLEET_CA=/elkcerts/certs/ca/ca.crt
+#   networks:
+#     - elk
+#   volumes:
+#     - generatedcerts:/elkcerts/certs/:z
+#   hostname: agent
 
 networks:
   elk:
