@@ -2,28 +2,43 @@ instances:
   - name: "elk-server-certs" 
     ip: 
       - "0.0.0.0"
+      - "20.231.46.22"
+      - "127.0.0.1"
     dns: 
       - "elasticsearch"
+      - localhost
   - name: "kibana"
     ip: 
       - "0.0.0.0"
+      - "20.231.46.22"
+      - "127.0.0.1"
     dns: 
       - "elasticsearch"
       - "kibana"
+      - localhost
   - name: "logstash"
     ip: 
       - "0.0.0.0"
+      - "20.231.46.22"
+      - "127.0.0.1"
     dns: 
       - "elasticsearch"
+      - localhost
   - name: "elasticagent"
     ip: 
       - "0.0.0.0"
+      - "20.231.46.22"
+      - "127.0.0.1"
     dns: 
       - "elasticsearch"
+      - localhost
   - name: "fleet"
     ip: 
       - "0.0.0.0"
+      - "20.231.46.22"
+      - "127.0.0.1"
     dns: 
       - "fleet"
       - "elasticsearch"
       - "kibana"
+      - localhost
