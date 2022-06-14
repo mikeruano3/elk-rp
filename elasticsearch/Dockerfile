@@ -16,11 +16,15 @@ RUN mkdir -p /elkcerts/certs; \
 	chown elasticsearch /elkcerts*;
 
 # Create CA certs
-RUN cd /usr/share/elasticsearch && \
-	echo 'Y' | bin/elasticsearch-certutil ca --pem --out /elkcerts/certs/elastic-stack-ca.zip --days 3650
+#RUN cd /usr/share/elasticsearch && \
+#	echo 'Y' | bin/elasticsearch-certutil ca --pem --out /elkcerts/certs/elastic-stack-ca.zip --days 3650
 
 # unzip CA certs
-RUN cd /elkcerts/certs/ && unzip elastic-stack-ca.zip
+#RUN cd /elkcerts/certs/ && unzip elastic-stack-ca.zip
+
+RUN mkdir /elkcerts/certs/ca
+RUN cp /ssl/ca/ca.crt /elkcerts/certs/ca/ca.crt
+RUN cp /ssl/ca/ca.key /elkcerts/certs/ca/ca.key
 
 # Generate .crt and .key for elasticsearch
 RUN cd /usr/share/elasticsearch && \
