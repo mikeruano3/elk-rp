@@ -1,2 +1,2 @@
 test/ubuntu-elastic-agent/certs
-elasticsearch/ssl/ca
+#elasticsearch/ssl/ca
