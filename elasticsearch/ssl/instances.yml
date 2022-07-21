@@ -2,7 +2,7 @@ instances:
   - name: "elk-server-certs" 
     ip: 
       - "0.0.0.0"
-      - "20.231.46.22"
+      - "20.228.157.228"
       - "127.0.0.1"
     dns: 
       - "elasticsearch"
@@ -10,7 +10,7 @@ instances:
   - name: "kibana"
     ip: 
       - "0.0.0.0"
-      - "20.231.46.22"
+      - "20.228.157.228"
       - "127.0.0.1"
     dns: 
       - "elasticsearch"
@@ -19,7 +19,7 @@ instances:
   - name: "logstash"
     ip: 
       - "0.0.0.0"
-      - "20.231.46.22"
+      - "20.228.157.228"
       - "127.0.0.1"
     dns: 
       - "elasticsearch"
@@ -27,7 +27,7 @@ instances:
   - name: "elasticagent"
     ip: 
       - "0.0.0.0"
-      - "20.231.46.22"
+      - "20.228.157.228"
       - "127.0.0.1"
     dns: 
       - "elasticsearch"
@@ -35,7 +35,7 @@ instances:
   - name: "fleet"
     ip: 
       - "0.0.0.0"
-      - "20.231.46.22"
+      - "20.228.157.228"
       - "127.0.0.1"
     dns: 
       - "fleet"
